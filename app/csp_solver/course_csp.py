@@ -150,13 +150,30 @@ def check_vars(d0, d1):
         #if (t[1] not in t[0]) and (t[0] not in t[1]):
             #sat_tuples.append(t)
         invalid = False
+        #print(t)
 
-        print(d0 + " " + d1)
+        time_list_1 = t[0].strip().split(",")
+        time_list_2 = t[1].strip().split(",")
 
-        time_list = t[0].strip().split(",")
-        for time_slot in time_list:
-            if time_slot in t[1]:
+
+        start_day_0 = time_list_1[0].split("_")[0]
+        start_hour_0 = int(time_list_1[0].split("_")[1])
+
+        end_day_0 = time_list_1[1].split("_")[0]
+        end_hour_0 = int(time_list_1[1].split("_")[1])
+
+        start_day_1 = time_list_2[0].split("_")[0]
+        start_hour_1 = int(time_list_2[0].split("_")[1])
+
+        end_day_1 = time_list_2[1].split("_")[0]
+        end_hour_1 = int(time_list_2[1].split("_")[1])
+
+        if (start_day_0 == start_day_1 and end_day_0 == end_day_1):
+            if start_hour_0 >= start_hour_1 and start_hour_0 <= end_hour_1:
                 invalid = True
+            elif start_hour_1 >= start_hour_0 and start_hour_1 < end_hour_0:
+                invalid = True
+
         if not invalid:
             sat_tuples.append(t)
 

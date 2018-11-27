@@ -38,21 +38,51 @@ def upload_courses():
         return str(assigned_sections)
 
 def solve_course(course_times):
+
+    #course_times = [[3], ["M_12,M_13", "W_10,W_11", "F_18,F_19"], ["M_11,M_14", "F_10,F_11", "F_17,F_18"], ["W_9,W_10", "Th_13,Th_14", "F_14,F_15"]]
+    #course_times = [[3],["Tu_8,Tu_10"],["M_8,M_10"],["M_8,M_10"]]
+
     print("Solving courses")
-    print(course_times)
+    #print(course_times)
     #csp, var_array = model_course_as_var([course_times])
     csp, var_array = model_course_as_var(course_times)
 
     solver = BT(csp)
-    print("=======================================================")
-    print("GAC")
     solver.bt_search(prop_GAC)
-    print("Solution")
     print_course_soln(var_array)
 
     assigned_sections = []
     for var in var_array:
         assigned_sections.append(var.get_assigned_value())
+
+
+    # 1 conflict
+
+
+    if None in assigned_sections:
+        course_times_mod = course_times.copy()
+        course_times_mod[0][0] -= 1
+        print("1 conflict")
+        removing = 1
+        while None in assigned_sections and removing <= len(course_times):
+
+
+            course_times_mod.pop(removing)
+            #print("removing %d"%removing)
+            #print("running alog with")
+            #print(course_times_mod)
+            csp, var_array = model_course_as_var(course_times_mod)
+            solver = BT(csp)
+            solver.bt_search(prop_GAC)
+            assigned_sections = []
+            for var in var_array:
+                assigned_sections.append(var.get_assigned_value())
+            if None not in assigned_sections:
+                #add back 0th section from removed course
+                assigned_sections.insert(removing-1, course_times[removing][0])
+            removing += 1
+            course_times_mod = course_times.copy()
+
     return assigned_sections
 
 
