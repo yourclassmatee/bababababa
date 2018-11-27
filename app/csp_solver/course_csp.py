@@ -4,14 +4,14 @@
 Construct and return Kenken CSP model.
 '''
 
-from cspbase import *
+from app.csp_solver.cspbase import *
 import itertools
 
 def model_course_as_var(course_list):
 
     course_num = course_list[0][0]
     # list of timeslots e.g.["M10","Tu10","W16"]
-    no_go = course_list[course_num + 1]
+    no_go = []
     # generate vars
     vars = []
     for i in range(1, course_num+1):
@@ -150,6 +150,9 @@ def check_vars(d0, d1):
         #if (t[1] not in t[0]) and (t[0] not in t[1]):
             #sat_tuples.append(t)
         invalid = False
+
+        print(d0 + " " + d1)
+
         time_list = t[0].strip().split(",")
         for time_slot in time_list:
             if time_slot in t[1]:

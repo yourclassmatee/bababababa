@@ -2,35 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <style>
-        h1.title{
-            margin-bottom: 0px;
-        }
-        div.gs {
-            margin-top: 10px;
-        }
-        div.gallery {
-            margin: 5px;
-            border: 1px solid #ccc;
-            float: left;
-            width: 300px;
-        }
-
-        div.gallery:hover {
-            border: 1px solid #777;
-        }
-
-        div.gallery img {
-            width: auto;
-            height: 200px;
-        }
-
-        div.desc {
-            padding: 15px;
-            text-align: center;
-        }
-    </style>
-    <title>Dashboard</title>
+    <title>Course Selection</title>
 </head>
 <body>
 
@@ -46,33 +18,45 @@
 {% endif %}
 {% endwith %}
 
-<form method="POST" action={{url_for('logout')}}>
-    <input type="hidden" name="username" value="{{session['username']}}">
-    <input type="submit" value="Log out">
-</form>
-<br>
 
- <form action="/upload/{{session['username']}}"  enctype="multipart/form-data" method="post">
-     <label> Upload a new photo </label> <br>
-     <input type="file" name="uploadedfile"><br/>
-     <input type="submit" value="Send">
-     <input type="reset">
-</form>
+<form method="POST" action="{{url_for('upload_courses')}}">
+    <div id="course_1">
+        <label id="course_1"> Course 1 </label>
+        <a class="remove_course" id="remove_course_1" href="#">Remove Course</a> <br>
+        <input id="course_1" type="text" name="course_id" value=""> <br>
 
-<div class = "gs">
-    <h2>Your photos</h2>
+        <div id="section_1_1">
+            <label id="section_1_1"> Section 1</label> 
+            <a class="remove_section" id="remove_section_1_1" href="#">Remove Section</a> <br>
+            Start: <input id="section_1_1" type="text" name="course_1" value="">
+            End: <input id="section_1_1" type="text" name="course_1" value=""> <br>
+        </div>
 
-    {% for id,link in thumbs.items() %}
+        <div id="section_1_2">
+            <label id="section_1_2"> Section 2</label> 
+            <a class="remove_section" id="remove_section_1_2" href="#">Remove Section</a> <br>
+            Start: <input id="section_1_2" type="text" name="course_1" value="">
+            End: <input id="section_1_2" type="text" name="course_1" value="">
+        </div>
+        <a class="add_section" id="add_section_course_1" href="#">Add Section</a>
 
-    <div class="gallery">
-      <a target="_blank" href="{{url_for('display_images', photo_id=id)}}">
-        <img src="{{link}}" alt="" height="200">
-      </a>
-      <div class="desc">photo_id: {{id}}</div>
     </div>
 
-    {% endfor %}
-</div>
+    <a id="add_course" href="#">Add Course</a>
+
+    <input type="submit" value="Submit">
+</form>
+
+
+    
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type=text/javascript>
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script src="{{url_for('static', filename='dashboard.js')}}"></script>
+
 
 </body>
 </html>

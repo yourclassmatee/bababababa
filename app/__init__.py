@@ -16,6 +16,7 @@ webapp.config.from_pyfile('config.py')
 from app import main
 from app import login
 from app import user
+from app import table
 
 
 

@@ -1,6 +1,6 @@
-from course_csp import *
-from propagators import *
-from orderings import *
+from app.csp_solver.course_csp import *
+from app.csp_solver.propagators import *
+from app.csp_solver.orderings import *
 
 
 testcase = [

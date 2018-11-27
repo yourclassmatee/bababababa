@@ -11,7 +11,8 @@
 	<title>Schedule Template | CodyHouse</title>
 </head>
 <body>
-<div class="cd-schedule loading">
+<a id="get_image" href="#"> Get timetable image </a>
+<div class="cd-schedule loading" id="capture">
 	<div class="timeline">
 		<ul>
 			<li><span>09:00</span></li>
@@ -223,6 +224,9 @@
 <script>
 	if( !window.jQuery ) document.write('<script src="js/jquery-3.0.0.min.js"><\/script>');
 </script>
+<script src="{{url_for('static', filename='dom-to-image.js')}}"></script> <!-- Resource jQuery -->
 <script src="{{url_for('static', filename='main.js')}}"></script> <!-- Resource jQuery -->
+<script src="{{url_for('static', filename='generate_image.js')}}"></script> <!-- Resource jQuery -->
+
 </body>
 </html>

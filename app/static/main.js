@@ -59,6 +59,7 @@ jQuery(document).ready(function($){
 		} else {
 			this.element.removeClass('loading');
 		}
+
 	};
 
 	SchedulePlan.prototype.initEvents = function() {
