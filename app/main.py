@@ -1,9 +1,11 @@
 
 from flask import render_template, url_for, session, redirect, request, flash
 from app import webapp
+from app.login import check_session
 
 from app.csp_solver.course_csp import *
 from app.csp_solver.propagators import *
+
 
 @webapp.route('/')
 def main():
@@ -58,4 +60,14 @@ def print_course_soln(var_array):
     for var in var_array:
         print(var.get_assigned_value())
 
+
+@webapp.route('/dashboard/<username>')
+def dashboard(username):
+
+    if(check_session(username)):
+
+        return render_template('dashboard.html')
+    else:
+        flash("Error: you are not logged in")
+        return redirect(url_for('login'))
 

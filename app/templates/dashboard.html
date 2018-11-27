@@ -47,6 +47,10 @@
     <input type="submit" value="Submit">
 </form>
 
+<form method="POST" action={{url_for('logout')}}>
+    <input type="hidden" name="username" value="{{session['username']}}">
+    <input type="submit" value="Log out">
+</form>
 
     
 
@@ -56,6 +60,8 @@
     $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 <script src="{{url_for('static', filename='dashboard.js')}}"></script>
+
+
 
 
 </body>

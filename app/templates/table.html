@@ -41,44 +41,25 @@
 		<ul>
 			<li class="events-group">
 				<div class="top-info"><span>Monday</span></div>
-
 				<ul>
-					<!--<li class="single-event" data-start="09:30" data-end="12:30" data-content="event-abs-circuit" data-event="event-5">-->
-						<!--<a href="#0">-->
-							<!--<em class="event-name">Abs Circuit </em>-->
-                            <!--<em class="event-name">09:30-10:30 </em>-->
-                            <!--<em class="event-name">Rowing Workout</em>-->
-                            <!--<em class="event-name">10:00-12:30</em>-->
-						<!--</a>-->
-					<!--</li>-->
-                    {% for event,info in monday_events.items() %}
+                    {% for info in monday_events %}
                     {% if info[0] == 1 %}
-                    <li class="single-event" data-start={{info[1][1]}} data-end={{info[1][2]}} data-content="event-abs-circuit" data-event={{event}}>
+                    <li class="single-event" data-start={{info[2][1]}} data-end={{info[2][2]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">{{info[1][0]}}</em>
+							<em class="event-name">{{info[2][0]}}</em>
 						</a>
 					</li>
                     {% else %}
-                    <li class="single-event" data-start={{info[1][0]}} data-end={{info[1][1]}} data-content="event-abs-circuit" data-event={{event}}>
+                    <li class="single-event" data-start={{info[2][0]}} data-end={{info[2][1]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-                            {% for event in info[2] %}
+                            {% for event in info[3] %}
 							<em class="event-name">{{event[0]}}</em>
                             <em class="event-name">{{event[1]}}</em>
-                            <em class="event-name">{{event[2]}}</em>
+                            <!--<em class="event-name">{{event[2]}}</em>-->
                             {% endfor %}
 						</a>
 					</li>
-                    <!--<li class="single-event" data-start="09:30" data-end="12:30" data-content="event-abs-circuit" data-event="event-5">-->
-						<!--<a href="#0">-->
-							<!--<em class="event-name">Abs Circuit </em>-->
-                            <!--<em class="event-name">09:30-10:30 </em>-->
-                            <!--<em class="event-name">Rowing Workout</em>-->
-                            <!--<em class="event-name">10:00-12:30</em>-->
-						<!--</a>-->
-					<!--</li>-->
                     {% endif %}
-
-
                     {% endfor %}
 				</ul>
 			</li>
@@ -87,29 +68,25 @@
 				<div class="top-info"><span>Tuesday</span></div>
 
 				<ul>
-					<li class="single-event" data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2">
+					{% for info in tuesday_events %}
+                    {% if info[0] == 1 %}
+                    <li class="single-event" data-start={{info[2][1]}} data-end={{info[2][2]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Rowing Workout</em>
+							<em class="event-name">{{info[2][0]}}</em>
 						</a>
 					</li>
-
-					<li class="single-event" data-start="11:30" data-end="13:00"  data-content="event-restorative-yoga" data-event="event-4">
+                    {% else %}
+                    <li class="single-event" data-start={{info[2][0]}} data-end={{info[2][1]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Restorative Yoga</em>
+                            {% for event in info[3] %}
+							<em class="event-name">{{event[0]}}</em>
+                            <em class="event-name">{{event[1]}}</em>
+                            <!--<em class="event-name">{{event[2]}}</em>-->
+                            {% endfor %}
 						</a>
 					</li>
-
-					<li class="single-event" data-start="13:30" data-end="15:00" data-content="event-abs-circuit" data-event="event-1">
-						<a href="#0">
-							<em class="event-name">Abs Circuit</em>
-						</a>
-					</li>
-
-					<li class="single-event" data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3">
-						<a href="#0">
-							<em class="event-name">Yoga Level 1</em>
-						</a>
-					</li>
+                    {% endif %}
+                    {% endfor %}
 				</ul>
 			</li>
 
@@ -117,29 +94,25 @@
 				<div class="top-info"><span>Wednesday</span></div>
 
 				<ul>
-					<li class="single-event" data-start="09:00" data-end="10:15" data-content="event-restorative-yoga" data-event="event-4">
+					{% for info in wednesday_events %}
+                    {% if info[0] == 1 %}
+                    <li class="single-event" data-start={{info[2][1]}} data-end={{info[2][2]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Restorative Yoga</em>
+							<em class="event-name">{{info[2][0]}}</em>
 						</a>
 					</li>
-
-					<li class="single-event" data-start="10:45" data-end="11:45" data-content="event-yoga-1" data-event="event-3">
+                    {% else %}
+                    <li class="single-event" data-start={{info[2][0]}} data-end={{info[2][1]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Yoga Level 1</em>
+                            {% for event in info[3] %}
+							<em class="event-name">{{event[0]}}</em>
+                            <em class="event-name">{{event[1]}}</em>
+                            <!--<em class="event-name">{{event[2]}}</em>-->
+                            {% endfor %}
 						</a>
 					</li>
-
-					<li class="single-event" data-start="12:00" data-end="13:45"  data-content="event-rowing-workout" data-event="event-2">
-						<a href="#0">
-							<em class="event-name">Rowing Workout</em>
-						</a>
-					</li>
-
-					<li class="single-event" data-start="13:45" data-end="15:00" data-content="event-yoga-1" data-event="event-3">
-						<a href="#0">
-							<em class="event-name">Yoga Level 1</em>
-						</a>
-					</li>
+                    {% endif %}
+                    {% endfor %}
 				</ul>
 			</li>
 
@@ -147,29 +120,25 @@
 				<div class="top-info"><span>Thursday</span></div>
 
 				<ul>
-					<li class="single-event" data-start="09:30" data-end="10:30" data-content="event-abs-circuit" data-event="event-1">
+					{% for info in thursday_events %}
+                    {% if info[0] == 1 %}
+                    <li class="single-event" data-start={{info[2][1]}} data-end={{info[2][2]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Abs Circuit</em>
+							<em class="event-name">{{info[2][0]}}</em>
 						</a>
 					</li>
-
-					<li class="single-event" data-start="12:00" data-end="13:45" data-content="event-restorative-yoga" data-event="event-4">
+                    {% else %}
+                    <li class="single-event" data-start={{info[2][0]}} data-end={{info[2][1]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Restorative Yoga</em>
+                            {% for event in info[3] %}
+							<em class="event-name">{{event[0]}}</em>
+                            <em class="event-name">{{event[1]}}</em>
+                            <!--<em class="event-name">{{event[2]}}</em>-->
+                            {% endfor %}
 						</a>
 					</li>
-
-					<li class="single-event" data-start="15:30" data-end="16:30" data-content="event-abs-circuit" data-event="event-1">
-						<a href="#0">
-							<em class="event-name">Abs Circuit</em>
-						</a>
-					</li>
-
-					<li class="single-event" data-start="17:00" data-end="18:30"  data-content="event-rowing-workout" data-event="event-2">
-						<a href="#0">
-							<em class="event-name">Rowing Workout</em>
-						</a>
-					</li>
+                    {% endif %}
+                    {% endfor %}
 				</ul>
 			</li>
 
@@ -177,23 +146,25 @@
 				<div class="top-info"><span>Friday</span></div>
 
 				<ul>
-					<li class="single-event" data-start="10:00" data-end="11:00"  data-content="event-rowing-workout" data-event="event-2">
+					{% for info in friday_events %}
+                    {% if info[0] == 1 %}
+                    <li class="single-event" data-start={{info[2][1]}} data-end={{info[2][2]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Rowing Workout</em>
+							<em class="event-name">{{info[2][0]}}</em>
 						</a>
 					</li>
-
-					<li class="single-event" data-start="12:30" data-end="14:00" data-content="event-abs-circuit" data-event="event-1">
+                    {% else %}
+                    <li class="single-event" data-start={{info[2][0]}} data-end={{info[2][1]}} data-content="event-abs-circuit" data-event={{info[1]}}>
 						<a href="#0">
-							<em class="event-name">Abs Circuit</em>
+                            {% for event in info[3] %}
+							<em class="event-name">{{event[0]}}</em>
+                            <em class="event-name">{{event[1]}}</em>
+                            <!--<em class="event-name">{{event[2]}}</em>-->
+                            {% endfor %}
 						</a>
 					</li>
-
-					<li class="single-event" data-start="15:45" data-end="16:45"  data-content="event-yoga-1" data-event="event-3">
-						<a href="#0">
-							<em class="event-name">Yoga Level 1</em>
-						</a>
-					</li>
+                    {% endif %}
+                    {% endfor %}
 				</ul>
 			</li>
 		</ul>
