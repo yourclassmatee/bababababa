@@ -59,7 +59,7 @@ $('a.add_course').click(function() {
 
     //insert add section button
     $(add_section_template).insertAfter(new_course.children().last())
-    
+
     new_course.insertAfter($(this).parents().find("div.course").last())
 });
 
@@ -70,29 +70,13 @@ $("form").on("click", "a.add_section", function(){
 });
 
 $("form").on("click", "a.remove_section", function(){
-    var course_num = $(this).attr("id").split("_")[2];
-    console.log(course_num);
-    var sec_num = $(this).attr("id").split("_")[3];
-    console.log(sec_num);
-    if(sec_num <= 1){
-        return false;
-    }
-    $(this).parents().find("div#section_" + course_num + "_" + sec_num).remove();
+    
+    $(this).parent().remove();
     return false;
 });
 
 $("form").on("click", "a.remove_course", function(){
-    console.log($(this).attr("id"));
-    var course_num = $(this).attr("id").split("_")[2];
-    console.log(course_num);
 
-    if(course_num <= 1){
-        return false;
-    }
-    $(this).parents().find("div#course_"+ course_num).remove();
-
-
-    //TODO: update lables
-
+    $(this).parent().parent().remove();
     return false;
 });
