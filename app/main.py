@@ -5,16 +5,18 @@ from app.login import check_session
 
 from app.csp_solver.course_csp import *
 from app.csp_solver.propagators import *
+from app.timetable_db import *
 
 
 @webapp.route('/')
 def main():
-    #if session.get('username'):
-        #return redirect(url_for('dashboard', username=session.get('username')))
-    return render_template("dashboard.html")
+    if session.get('username'):
+        return redirect(url_for('dashboard', username=session.get('username')))
 
-@webapp.route('/upload_courses', methods=['POST'])
-def upload_courses():
+    return render_template("main.html")
+
+@webapp.route('/upload_courses/<username>', methods=['POST'])
+def upload_courses(username):
     if(request.form):
         form_list = request.form.getlist('courses')
 
@@ -54,7 +56,12 @@ def upload_courses():
         print(course_times)
         assigned_sections = solve_course(course_times)
 
-        return str(assigned_sections)
+        # print(username)
+        # print(courses)
+        # print(assigned_sections)
+        save_timetable(username, courses, assigned_sections)
+
+        return redirect(url_for('display_table', username=username))
 
 def solve_course(course_times):
 

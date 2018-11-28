@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-sm-8">
         <h3> Create new timetable </h3>
-        <form class="form" method="POST" action="{{url_for('upload_courses')}}">
+        <form class="form" method="POST" action="{{url_for('upload_courses',username=session['username'])}}">
             <div class="course">
             <div class="form-group form-inline">
                 <label for="course_name">Course Name: </label>
