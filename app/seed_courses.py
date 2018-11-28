@@ -37,6 +37,14 @@ def add_course(course_code, sections):
     )
     print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
+
+def add_no_conflict():
+    sections = [["W_13,W_14", "M_10,M_11", "W_15,W_16"], ["F_13,F_14", "W_13,W_14", "Tu_13,Tu_14"],
+                ["F_14,F_15", "Tu_14,Tu_15", "W_14,W_15"], ["F_10,F_11", "Th_10,Th_11", "Tu_10,Tu_11"],
+                ["F_9,F_10", "Th_14,Th_15", "Tu_12,Tu_13"], ["M_9,M_10", "Th_11,Th_12"],
+                ["M_11,M_12", "Th_11,Th_12", "W_11,W_12"]]
+    courses = ["ECE410", "ECE421", "ECE431", "ECE343", "ECE196", "ECE410", "ECE302", "ECE311", "ECE316", "ECE318"]
+
 def main():
     # create_user("user 2", "bbb")
     # print(check_password("user 2", "bbb"))

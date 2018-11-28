@@ -55,6 +55,8 @@ def upload_courses(username):
 
         #print(course_times)
         assigned_sections = solve_course(course_times)
+        print(assigned_sections)
+        print(courses)
 
         # print(username)
         # print(courses)

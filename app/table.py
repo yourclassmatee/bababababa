@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 BUCKET = 'ece1779-a3'
 
 # event-0 for conflict
-all_colors=["event-1","event-2","event-3","event-4","event-5","event-6","event-6","event-7","event-8"]
+all_colors=["event-1","event-2","event-3","event-4","event-5","event-6","event-7","event-8"]
 
 @webapp.route('/timetable/<username>')
 def display_table(username):

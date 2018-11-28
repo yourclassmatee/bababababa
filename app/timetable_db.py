@@ -258,38 +258,51 @@ def get_courses():
         sections.append(i['sections'])
     return courses, sections
 
-
-def add_course(course_code, sections):
-    # sections format: [["mat101", "F1-5"], ["phl101","W5-6"]]
+def get_course_sections(course_code):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('Course')
-
-    # course_code = "MAT101"
-    # section = ["F1-3", "M3-4"]
-
-    response = table.put_item(
-        Item={
-            'course_code': course_code,
+    response = table.get_item(
+        Key={
+            'name': course_code,
         }
     )
-    #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+    print(response)
+    if 'sections' in response['Item'].keys():
+        return response['Item']['sections']
+    else:
+        return []
 
-    response = table.update_item(
-        Key={
-            'course_code': course_code,
-        },
-        UpdateExpression="set  sections=:s",
-        ExpressionAttributeValues={
-            ':s': {
-                "L": sections
-                # "L": [
-                #     ["mat101", "F1-5"],
-                #     ["phl101", "W5-6"]
-                # ]
-            },
-
-        },
-        ReturnValues="UPDATED_NEW"
-    )
-    #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+# def add_course(course_code, sections):
+#     # sections format: [["mat101", "F1-5"], ["phl101","W5-6"]]
+#     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+#     table = dynamodb.Table('Course')
+#
+#     # course_code = "MAT101"
+#     # section = ["F1-3", "M3-4"]
+#
+#     response = table.put_item(
+#         Item={
+#             'course_code': course_code,
+#         }
+#     )
+#     #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+#
+#     response = table.update_item(
+#         Key={
+#             'course_code': course_code,
+#         },
+#         UpdateExpression="set  sections=:s",
+#         ExpressionAttributeValues={
+#             ':s': {
+#                 "L": sections
+#                 # "L": [
+#                 #     ["mat101", "F1-5"],
+#                 #     ["phl101", "W5-6"]
+#                 # ]
+#             },
+#
+#         },
+#         ReturnValues="UPDATED_NEW"
+#     )
+#     #print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
