@@ -13,7 +13,7 @@ function uplaod_image(blob){
         //Chrome inspector shows that the post data includes a file and a title.                                                                                                                                           
         $.ajax({
           type: 'POST',
-          url: '/save_timetable',
+          url: $SCRIPT_ROOT + '/save_timetable',
           data: form,
           cache: false,
           processData: false,
