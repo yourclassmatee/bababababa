@@ -7,16 +7,21 @@ from app.csp_solver.course_csp import *
 from app.csp_solver.propagators import *
 from app.timetable_db import *
 
+UNAUTHORIZED ="INFO: You are not logged in"
 
 @webapp.route('/')
 def main():
     if session.get('username'):
         return redirect(url_for('dashboard', username=session.get('username')))
-
+    flash(UNAUTHORIZED)
     return render_template("main.html")
 
 @webapp.route('/upload_courses/<username>', methods=['POST'])
 def upload_courses(username):
+    if not session.get('username'):
+        flash(UNAUTHORIZED)
+        return redirect(url_for('login'))
+
     if(request.form):
         form_list = request.form.getlist('courses')
 
@@ -50,6 +55,13 @@ def upload_courses(username):
                 i = j+1
 
 
+        #check invalid input
+        if form_list[0] == "":
+            flash("invalid input")
+            return redirect(url_for('dashboard', username=username))
+
+
+
         #add num of courses
         course_times.insert(0, [len(course_times)])
 
@@ -64,6 +76,7 @@ def upload_courses(username):
         save_timetable(username, courses, assigned_sections)
 
         return redirect(url_for('display_table', username=username))
+    return "no form"
 
 def solve_course(course_times):
 

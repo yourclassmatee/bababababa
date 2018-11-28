@@ -1,6 +1,7 @@
 from flask import render_template, url_for, session, redirect, request, flash
 from app import webapp
 from app.timetable_db import *
+from app.login import check_session
 import uuid
 import botocore
 
@@ -12,6 +13,9 @@ all_colors=["event-1","event-2","event-3","event-4","event-5","event-6","event-7
 
 @webapp.route('/timetable/<username>')
 def display_table(username):
+    if not check_session(username):
+        flash("INFO: you are not logged in")
+        return redirect(url_for('login'))
     #if session.get('username'):
         #return redirect(url_for('dashboard', username=session.get('username')))
     #return render_template("main.html")
@@ -33,6 +37,9 @@ def display_photo(photos):
 
 @webapp.route('/save_timetable', methods=['POST'])
 def save_timetable():
+    if not session.get("username"):
+        flash("INFO: you are not logged in")
+        return redirect(url_for('login'))
     print("saving timetable")
 
     username = session.get('username')
@@ -64,6 +71,9 @@ def save_timetable():
 
 @webapp.route('/get_sections/<course_code>', methods=['GET'])
 def get_sections(course_code):
+    if not session.get("username"):
+        flash("INFO: you are not logged in")
+        return redirect(url_for('login'))
     return json.dumps(get_course_sections(course_code))
 
 
