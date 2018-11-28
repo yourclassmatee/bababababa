@@ -47,13 +47,13 @@ def upload_courses(username):
 
                 course_times.append(sections_one_course)
                 #print(course_times)
-                i = j+2
+                i = j+1
 
 
         #add num of courses
         course_times.insert(0, [len(course_times)])
 
-        print(course_times)
+        #print(course_times)
         assigned_sections = solve_course(course_times)
 
         # print(username)
