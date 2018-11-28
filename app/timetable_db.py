@@ -191,6 +191,7 @@ def save_photo(username, filename):
     )
 
     if 'photos' not in response['Item'].keys():
+        print("no photo attribute")
         response = table.update_item(
             Key={
                 'name': username,
@@ -203,6 +204,7 @@ def save_photo(username, filename):
         )
         #print(json.dumps(response, indent=4, cls=DecimalEncoder))
     else:
+        print("exist photo attribute")
         response = table.update_item(
             Key={
                 'name': username,
