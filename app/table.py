@@ -16,13 +16,8 @@ def display_table(username):
         #return redirect(url_for('dashboard', username=session.get('username')))
     #return render_template("main.html")
     photos=get_photos(username)
-    print("------------photos")
-    print(photos)
     photo_links=display_photo(photos)
-    print(photo_links)
     courses, sections=get_timetable(username)
-    print(courses)
-    print(sections)
     monday, tuesday, wednesday, thursday, friday=convert_solution(courses, sections)
     return render_template("table.html", photos=photo_links, monday_events=monday, tuesday_events=tuesday, wednesday_events=wednesday, thursday_events=thursday, friday_events=friday)
 
@@ -42,7 +37,7 @@ def save_timetable():
 
     username = session.get('username')
     table_file = request.files['file']
-    print(table_file)
+    #print(table_file)
 
     photo_id = str(uuid.uuid4())
 
@@ -82,11 +77,11 @@ def convert_solution(courses, sections):
     wednesday_event = check_conflict(wednesday, course_to_color)
     thursday_event = check_conflict(thursday, course_to_color)
     friday_event = check_conflict(friday, course_to_color)
-    print(monday_event)
-    print(tuesday_event)
-    print(wednesday_event)
-    print(thursday_event)
-    print(friday_event)
+    # print(monday_event)
+    # print(tuesday_event)
+    # print(wednesday_event)
+    # print(thursday_event)
+    # print(friday_event)
     return monday_event, tuesday_event, wednesday_event, thursday_event, friday_event
 
 

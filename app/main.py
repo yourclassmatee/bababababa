@@ -119,11 +119,42 @@ def print_course_soln(var_array):
 
 @webapp.route('/dashboard/<username>')
 def dashboard(username):
-
     if(check_session(username)):
+        courses, sections = get_courses()
+        all_courses = convert_courses(courses, sections)
+        #print(all_courses)
 
-        return render_template('dashboard.html')
+        return render_template('dashboard.html', all_courses=all_courses)
     else:
         flash("Error: you are not logged in")
         return redirect(url_for('login'))
 
+def convert_courses(courses, sections):
+    all_courses=[]
+    for i in range(len(courses)):
+        section_str = convert_to_str(sections[i])
+        all_courses.append([courses[i], section_str])
+    return all_courses
+
+def convert_to_str(section):
+    #section=["W_13,W_14", "M_10,M_11", "W_15,W_16"]
+    section_str = []
+    for time in section:
+        start_day = convert_day((time.split(',')[0]).split('_')[0])
+        start_time = (time.split(',')[0]).split('_')[1]
+        end_time = (time.split(',')[1]).split('_')[1]
+        time_str = start_day + ' ' + start_time + ':00' + '-' + end_time + ':00 '
+        section_str.append(time_str)
+    return section_str
+
+def convert_day(day):
+    if day == "M":
+        return "Monday"
+    elif day == "Tu":
+        return "Tuesday"
+    elif day == "W":
+        return "Wednesday"
+    elif day == "Th":
+        return "Thursday"
+    else:
+        return "Friday"

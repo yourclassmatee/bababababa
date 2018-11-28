@@ -129,6 +129,23 @@
             <input type="submit" value="Submit">
         </form>
     </div>  <!-- div class="col-sm-8"-->
+
+    <div class="col-sm-4">
+    <ul class="nav nav-pills nav-stacked" height="200px" style="overflow-y: scroll;">
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Courses</a>
+          {% for course in all_courses %}
+        <li class="nav-item">
+            <a class="nav-link" href="#">{{course[0]}}
+                {% for section in course[1] %}
+                <p>{{section}}</p>
+                {% endfor %}
+            </a>
+        </li>
+        {% endfor %}
+    </li>
+  </ul>
+    </div>
 </div> <!-- div class="row"-->
 </div> <!-- div class="container"-->
 

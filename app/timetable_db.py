@@ -139,8 +139,8 @@ def create_user(name, password):
         ReturnValues="UPDATED_NEW"
     )
 
-    print("UpdateItem succeeded:")
-    print(json.dumps(response, indent=4, cls=DecimalEncoder))
+    # print("UpdateItem succeeded:")
+    # print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
 def save_timetable(name, courses, sections):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -168,6 +168,20 @@ def save_timetable(name, courses, sections):
         ReturnValues="UPDATED_NEW"
     )
 
+def check_photo_exist(username):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('User')
+    response = table.get_item(
+        Key={
+            'name': username,
+        }
+    )
+
+    if 'photos' not in response['Item'].keys():
+        return False
+    else:
+        return True
+
 def get_timetable(name):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('User')
@@ -191,7 +205,7 @@ def save_photo(username, filename):
     )
 
     if 'photos' not in response['Item'].keys():
-        print("no photo attribute")
+        # print("no photo attribute")
         response = table.update_item(
             Key={
                 'name': username,
@@ -202,9 +216,9 @@ def save_photo(username, filename):
             },
             ReturnValues="UPDATED_NEW"
         )
-        #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+        # print(json.dumps(response, indent=4, cls=DecimalEncoder))
     else:
-        print("exist photo attribute")
+        # print("exist photo attribute")
         response = table.update_item(
             Key={
                 'name': username,
@@ -216,7 +230,7 @@ def save_photo(username, filename):
             },
             ReturnValues="UPDATED_NEW"
         )
-        #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+        # print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
 def get_photos(username):
     dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -227,11 +241,22 @@ def get_photos(username):
         }
     )
 
-    print("----------------------------------")
-    print(response)
+    # print("----------------------------------")
+    # print(response)
     if 'photos' not in response['Item'].keys():
         return []
     return response['Item']['photos']
+
+def get_courses():
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('Course')
+    response = table.scan()
+    courses=[]
+    sections=[]
+    for i in response['Items']:
+        courses.append(i['name'])
+        sections.append(i['sections'])
+    return courses, sections
 
 
 def add_course(course_code, sections):
@@ -262,8 +287,6 @@ def add_course(course_code, sections):
                 #     ["phl101", "W5-6"]
                 # ]
             },
-
-
 
         },
         ReturnValues="UPDATED_NEW"

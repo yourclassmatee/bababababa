@@ -1,6 +1,6 @@
 from flask import render_template, url_for, request, make_response, flash, redirect, session
 from app import webapp
-from app.timetable_db import check_password
+from app.timetable_db import *
 
 
 @webapp.route('/login', methods=["GET", "POST"])
@@ -23,7 +23,10 @@ def do_login(form):
         if response == 0:
             #set session
             session['username'] = username
-            return redirect(url_for("dashboard", username=username))
+            if not check_photo_exist(username):
+                return redirect(url_for("dashboard", username=username))
+            else:
+                return redirect(url_for("display_table",username=username))
         elif response == 1:
             flash("ERROR: wrong password")
             return redirect(url_for("login"))
