@@ -19,11 +19,13 @@ function uplaod_image(blob){
           processData: false,
           contentType: false
         }).done(function(data) {
-          console.log("sent table to flask");
+          console.log(data);
+          location.reload();
         });
 }
 
 
 $("body").on("click", "a#get_image", function(){
     generate_image();
+    
 });

@@ -57,17 +57,14 @@ def save_timetable():
         object_acl = s3.ObjectAcl(BUCKET, filename)
         response = object_acl.put(ACL='public-read')
 
-
     except Exception as e:
         print(e)
         #if files are not saved then do not save to db
-
         print("saving to s3 fails")
-
     # save to dynamodb
     save_photo(username, filename)
 
-    return ""
+    return "saved " + filename
 
 def convert_solution(courses, sections):
     # courses = ["c1", "c2", "c3", "c4", "c5","c6", "c7", "c8"]
