@@ -10,9 +10,9 @@ def login():
     else:
         return render_template("login_form.html")
 
-@webapp.route('/logout', methods=["POST"])
-def logout():
-    return do_logout(request.form)
+@webapp.route('/logout/<username>', methods=["GET"])
+def logout(username):
+    return do_logout(username)
 
 def do_login(form):
     if(form):
@@ -31,8 +31,8 @@ def do_login(form):
             flash("ERROR: user does not exist")
             return redirect(url_for("login"))
 
-def do_logout(form):
-    if(check_session(form.get("username"))):
+def do_logout(username):
+    if(check_session(username)):
         session.pop('username', None)
         flash("INFO: logout successful")
         return redirect(url_for('login'))

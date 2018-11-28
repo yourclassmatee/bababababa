@@ -13,10 +13,7 @@
         <h1 class="title"> Welcome user: {{session['username']}}</h1>
     </div>
     <div class="col-sm-4">
-        <form method="POST" action={{url_for('logout')}}>
-            <input type="hidden" name="username" value="{{session['username']}}">
-            <input type="submit" value="Log out">
-        </form>
+        <h3><a class="nav-link" href={{url_for('logout', username=session['username'])}}>Log out</a></h3>
     </div>
 </div>   
 
