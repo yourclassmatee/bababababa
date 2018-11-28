@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--<link rel="stylesheet" href="{{url_for('static', filename='main.css')}}">-->
+    <link rel="stylesheet" href="{{url_for('static', filename='dashboard.css')}}">
     <meta charset="UTF-8">
     <title>Course Selection</title>
 </head>
@@ -20,18 +20,18 @@
 
 <div class="row"> 
         <div class="col-sm-12">
+        <h3> Create new timetable </h3>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for msg in messages %}
                 <p class="flash">{{msg}}</p>
             {% endfor %}
         {% endif %}
-        {% endwith %}
+        {% endwith %}     
     </div>
 </div>  
 <div class="row">
-    <div class="col-sm-8">
-        <h3> Create new timetable </h3>
+    <div class="col-sm-6 scrollable_ul">
         <form class="form" method="POST" action="{{url_for('upload_courses',username=session['username'])}}">
             <div class="course">
             <div class="form-group form-inline">
@@ -131,12 +131,16 @@
     </div>  <!-- div class="col-sm-8"-->
 
     <div class="col-sm-4">
-    <ul class="nav nav-pills nav-stacked" height="200px" style="overflow-y: scroll;">
+    <ul class="nav nav-pills nav-stacked scrollable_ul">
     <li class="nav-item">
-      <a class="nav-link active" href="#">Courses</a>
+      <h3 >Course List: </h3>
           {% for course in all_courses %}
         <li class="nav-item">
-            <a class="nav-link" href="#">{{course[0]}}
+            <a class="nav-link" href="#">
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="{{course[0]}}" value="">
+                <label class="form-check-label" for="{{course[0]}}">{{course[0]}}</label>
+                </div>
                 {% for section in course[1] %}
                 <p>{{section}}</p>
                 {% endfor %}

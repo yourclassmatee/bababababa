@@ -61,6 +61,12 @@ def save_timetable():
 
     return "saved " + filename
 
+
+@webapp.route('/get_sections/<course_code>', methods=['GET'])
+def get_sections(course_code):
+    return json.dumps(get_course_sections(course_code))
+
+
 def convert_solution(courses, sections):
     # courses = ["c1", "c2", "c3", "c4", "c5","c6", "c7", "c8"]
     # sections = ["M_10,M_12", "Tu_13,Tu_15", "M_12,M_14", "W_9,W_14", "Th_13,Th_15", "F_13,F_14", "M_11,M_13","M_13,M_15"]
