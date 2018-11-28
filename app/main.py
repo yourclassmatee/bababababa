@@ -146,9 +146,14 @@ def dashboard(username):
 
 def convert_courses(courses, sections):
     all_courses=[]
+    courses_dic = {}
     for i in range(len(courses)):
         section_str = convert_to_str(sections[i])
-        all_courses.append([courses[i], section_str])
+        courses_dic[courses[i]] = section_str
+
+    for key in sorted(courses_dic.keys()):
+        all_courses.append([key, courses_dic[key]])
+
     return all_courses
 
 def convert_to_str(section):
