@@ -16,23 +16,42 @@ def main():
 @webapp.route('/upload_courses', methods=['POST'])
 def upload_courses():
     if(request.form):
-        courses = request.form.getlist('course_id')
-        print(courses)
+        form_list = request.form.getlist('courses')
+
+        #form_list = ['EFWEFEWF', 'M', '9', '10', 'Tu', '9', '11', '', 'GIRGURG', 'Tu', '10', '11', '']
+        print(form_list)
+
+        courses = []
 
         course_times = []
-        course_times.append([len(courses)])
-        for key in request.form.keys():
-            if(key == "course_id"):
-                continue
-            sections = request.form.getlist(key)
-            section_times = []
-            for i in range(0,len(sections)-1, 2):
-                one_section = sections[i] + "," + sections[i+1]
-                #print(one_section)
-                section_times.append(one_section)
-            course_times.append(section_times)
 
-        #print(course_times)
+        i=0
+        while i < len(form_list):
+            if len(form_list[i]) > 2:
+                courses.append(form_list[i])
+                #print(courses)
+                i += 1
+            else:
+                j = i
+                sections_one_course = []
+                while form_list[j] != "":
+                    #make single section
+                    start = form_list[j] + "_" + form_list[j+1]
+                    end = form_list[j] + "_" + form_list[j+2]
+                    single_section = start + "," + end
+                    sections_one_course.append(single_section)
+                    #print(sections_one_course)
+                    j+=3
+
+                course_times.append(sections_one_course)
+                #print(course_times)
+                i = j+2
+
+
+        #add num of courses
+        course_times.insert(0, [len(course_times)])
+
+        print(course_times)
         assigned_sections = solve_course(course_times)
 
         return str(assigned_sections)
