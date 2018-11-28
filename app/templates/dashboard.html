@@ -19,7 +19,7 @@
 {% endwith %}
 
 
-<form method="POST" action="{{url_for('upload_courses')}}">
+<form method="POST" action="{{url_for('upload_courses',username=session['username'])}}">
     <div id="course_1">
         <label id="course_1"> Course 1 </label>
         <a class="remove_course" id="remove_course_1" href="#">Remove Course</a> <br>

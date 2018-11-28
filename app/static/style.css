@@ -24,6 +24,8 @@ a {
 /* --------------------------------
 Main Components
 -------------------------------- */
+
+
 .cd-schedule {
   position: relative;
   margin: 2em 0;
@@ -644,4 +646,8 @@ Main Components
 .cd-schedule.modal-is-open .cover-layer {
   opacity: 1;
   visibility: visible;
+}
+
+div#capture{
+width: 80%
 }

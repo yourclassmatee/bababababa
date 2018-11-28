@@ -16,7 +16,7 @@ class DecimalEncoder(json.JSONEncoder):
         return super(DecimalEncoder, self).default(o)
 
 def create_user_table():
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 
     table = dynamodb.create_table(
         TableName='User',
@@ -50,7 +50,7 @@ def create_user_table():
     print("user Table status:", table.table_status)
 
 def create_course_table():
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.create_table(
         TableName='Course',
         KeySchema=[
@@ -79,7 +79,7 @@ def create_course_table():
     print("course Table status:", table.table_status)
 
 def check_password(name, password):
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('User')
     response = table.query(
         KeyConditionExpression=Key('name').eq(name)
@@ -92,17 +92,19 @@ def check_password(name, password):
                     'name': name,
                 }
             )
-        if response['Item']['password'] == generate_password_hash(password):
+        if  check_password_hash(response['Item']['password'], password):
             return 0
         else:
             #wrong password
+            #print("generated:"+generate_password_hash(password))
+            #print("in db:" + response['Item']['password'])
             return 1
     else:
         #user not exist
         return 2
 
 def find_user(name):
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('User')
     response = table.query(
         KeyConditionExpression=Key('name').eq(name)
@@ -115,7 +117,9 @@ def find_user(name):
         return False
 
 def create_user(name, password):
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    #print("raw: "+ password)
+    #print("hash: "generate_password_hash(password))
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('User')
     response = table.put_item(
        Item={
@@ -138,10 +142,99 @@ def create_user(name, password):
     print("UpdateItem succeeded:")
     print(json.dumps(response, indent=4, cls=DecimalEncoder))
 
+def save_timetable(name, courses, sections):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('User')
+    response = table.update_item(
+        Key={
+            'name': name,
+        },
+        UpdateExpression="set  courses=:c, sections=:s",
+        ExpressionAttributeValues={
+            ':s':  sections
+                # "L": [
+                #     ["mat101", "F1-5"],
+                #     ["phl101", "W5-6"]
+                # ]
+            ,
+            ':c':  courses
+                # "L": [
+                #     ["mat101", "F1-5"],
+                #     ["phl101", "W5-6"]
+                # ]
+
+
+        },
+        ReturnValues="UPDATED_NEW"
+    )
+
+def get_timetable(name):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('User')
+    response = table.get_item(
+        Key={
+            'name': name,
+        }
+    )
+    courses=response['Item']['courses']#['L']
+    sections = response['Item']['sections']#['L']
+    return courses, sections
+
+def save_photo(username, filename):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('User')
+
+    response = table.get_item(
+        Key={
+            'name': username,
+        }
+    )
+
+    if 'photos' not in response['Item'].keys():
+        response = table.update_item(
+            Key={
+                'name': username,
+            },
+            UpdateExpression="set  photos =:p",
+            ExpressionAttributeValues={
+                ':p': [filename]
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+    else:
+        response = table.update_item(
+            Key={
+                'name': username,
+            },
+            UpdateExpression="set  photos = list_append(photos, :p)",
+            ExpressionAttributeValues={
+                ':p': [filename]
+
+            },
+            ReturnValues="UPDATED_NEW"
+        )
+        #print(json.dumps(response, indent=4, cls=DecimalEncoder))
+
+def get_photos(username):
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
+    table = dynamodb.Table('User')
+    response = table.get_item(
+        Key={
+            'name': username,
+        }
+    )
+
+    print("----------------------------------")
+    print(response)
+    if 'photos' not in response['Item'].keys():
+        return []
+    return response['Item']['photos']
+
 
 def add_course(course_code, sections):
     # sections format: [["mat101", "F1-5"], ["phl101","W5-6"]]
-    dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url="http://localhost:8000")
+    dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
     table = dynamodb.Table('Course')
 
     # course_code = "MAT101"

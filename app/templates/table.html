@@ -170,6 +170,19 @@
 		</ul>
 	</div>
 
+	<div class = "photos">
+    <h2>Your timetables</h2>
+
+    {% for link in photos %}
+
+
+    <div class="gallery">
+        <img src="{{link}}" alt="" height="200">
+    </div>
+
+    {% endfor %}
+	</div>
+
 	<div class="event-modal">
 		<header class="header">
 			<div class="content">

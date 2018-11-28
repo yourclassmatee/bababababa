@@ -1,33 +1,75 @@
 from flask import render_template, url_for, session, redirect, request, flash
 from app import webapp
+from app.timetable_db import *
+import uuid
+import botocore
+
+from werkzeug.utils import secure_filename
+BUCKET = 'ece1779-a3'
 
 # event-0 for conflict
 all_colors=["event-1","event-2","event-3","event-4","event-5","event-6","event-6","event-7","event-8"]
 
-@webapp.route('/timetable')
-def display_table():
+@webapp.route('/timetable/<username>')
+def display_table(username):
     #if session.get('username'):
         #return redirect(url_for('dashboard', username=session.get('username')))
     #return render_template("main.html")
-    monday, tuesday, wednesday, thursday, friday=convert_solution()
-    return render_template("table.html", monday_events=monday, tuesday_events=tuesday, wednesday_events=wednesday, thursday_events=thursday, friday_events=friday)
+    photos=get_photos(username)
+    print("------------photos")
+    print(photos)
+    photo_links=display_photo(photos)
+    print(photo_links)
+    courses, sections=get_timetable(username)
+    monday, tuesday, wednesday, thursday, friday=convert_solution(courses, sections)
+    return render_template("table.html", photos=photo_links, monday_events=monday, tuesday_events=tuesday, wednesday_events=wednesday, thursday_events=thursday, friday_events=friday)
+
+
+def display_photo(photos):
+    s3 = boto3.client('s3')
+    config = s3._client_config
+    config.signature_version = botocore.UNSIGNED
+    links=[]
+    for file in photos:
+        links.append(boto3.client('s3', config=config).generate_presigned_url('get_object', ExpiresIn=0, Params={'Bucket': BUCKET, 'Key': file}))
+    return links
 
 @webapp.route('/save_timetable', methods=['POST'])
 def save_timetable():
     print("saving timetable")
 
+    username = session.get('username')
     table_file = request.files['file']
     print(table_file)
 
-    table_file.save(webapp.config['UPLOAD_FOLDER'] + table_file.filename + '.png')
+    photo_id = str(uuid.uuid4())
 
+    filename = secure_filename(photo_id + '.png')
+    #table_file.save(webapp.config['UPLOAD_FOLDER'] + filename + '.png')
+
+    # try to save to s3
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(BUCKET)
+    try:
+        bucket.put_object(Key=filename, Body=table_file)
+        object_acl = s3.ObjectAcl(BUCKET, filename)
+        response = object_acl.put(ACL='public-read')
+
+
+    except Exception as e:
+        print(e)
+        #if files are not saved then do not save to db
+
+        print("saving to s3 fails")
+
+    # save to dynamodb
+    save_photo(username, filename)
 
     return ""
 
-def convert_solution():
-    courses = ["c1", "c2", "c3", "c4", "c5","c6", "c7", "c8"]
-    #section = ["M10,M11", "Tu", "Th", "F", "W"]
-    sections = ["M10,M12", "Tu13,Tu15", "M12,M14", "W9,W14", "Th13,Th15", "F13,F14", "M11,M13","M13,M15"]
+def convert_solution(courses, sections):
+    # courses = ["c1", "c2", "c3", "c4", "c5","c6", "c7", "c8"]
+    # sections = ["M_10,M_12", "Tu_13,Tu_15", "M_12,M_14", "W_9,W_14", "Th_13,Th_15", "F_13,F_14", "M_11,M_13","M_13,M_15"]
     timetable = dict(zip(courses, sections))
     # assign colors
     course_to_color = {}
@@ -57,24 +99,24 @@ def sort_by_day(sections):
     friday = {}
     for course, time in sections.items():
         if time[0] == 'M':
-            start = int(time.split(',')[0][1:])
-            end = int(time.split(',')[1][1:])
+            start = int(time.split(',')[0][2:])
+            end = int(time.split(',')[1][2:])
             monday[course]=[start, end]
         elif time[0] == 'W':
-            start = int(time.split(',')[0][1:])
-            end = int(time.split(',')[1][1:])
+            start = int(time.split(',')[0][2:])
+            end = int(time.split(',')[1][2:])
             wednesday[course]=[start, end]
         elif time[0] == 'F':
-            start = int(time.split(',')[0][1:])
-            end = int(time.split(',')[1][1:])
+            start = int(time.split(',')[0][2:])
+            end = int(time.split(',')[1][2:])
             friday[course]=[start, end]
         elif time[1] == 'u':
-            start = int(time.split(',')[0][2:])
-            end = int(time.split(',')[1][2:])
+            start = int(time.split(',')[0][3:])
+            end = int(time.split(',')[1][3:])
             tuesday[course]=[start, end]
         elif time[1] == 'h':
-            start = int(time.split(',')[0][2:])
-            end = int(time.split(',')[1][2:])
+            start = int(time.split(',')[0][3:])
+            end = int(time.split(',')[1][3:])
             thursday[course]=[start, end]
     return monday,tuesday,wednesday,thursday,friday
 
