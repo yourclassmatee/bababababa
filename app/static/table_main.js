@@ -1,4 +1,10 @@
 jQuery(document).ready(function($){
+	$("img.thumbnaill").click(function(){
+		var link = $(this).attr("src");
+		console.log(link);
+		$("#myModal").find("img").attr("src", link);
+	});
+
 	var transitionEnd = 'webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend';
 	var transitionsSupported = ( $('.csstransitions').length > 0 );
 	//if browser does not support transitions - use a different event to trigger them
