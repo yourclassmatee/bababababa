@@ -32,33 +32,37 @@ def upload_courses(username):
 
         course_times = []
 
+        #check for empty course
+        for item in form_list:
+            if item == "":
+                flash("invalid input")
+                return redirect(url_for('dashboard', username=username))
+
+        #input does not contain ""
         i=0
         while i < len(form_list):
             if len(form_list[i]) > 2:
                 courses.append(form_list[i])
-                #print(courses)
+                print(courses)
                 i += 1
             else:
                 j = i
                 sections_one_course = []
-                while form_list[j] != "":
+                while j<len(form_list) and len(form_list[j]) <= 2:
                     #make single section
                     start = form_list[j] + "_" + form_list[j+1]
                     end = form_list[j] + "_" + form_list[j+2]
                     single_section = start + "," + end
                     sections_one_course.append(single_section)
-                    #print(sections_one_course)
+                    print(sections_one_course)
                     j+=3
 
                 course_times.append(sections_one_course)
                 #print(course_times)
-                i = j+1
+                i = j
 
 
-        #check invalid input
-        if form_list[0] == "":
-            flash("invalid input")
-            return redirect(url_for('dashboard', username=username))
+
 
 
 

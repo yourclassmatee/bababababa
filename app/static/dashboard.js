@@ -47,8 +47,7 @@ var course_template = "<div class='course'> \
                 <a class='remove_course' id='' href='#'>(Remove)</a> \
             </div>"
 
-var add_section_template  = "<a class='add_section' id='' href='#'>Add Section</a> \
-<input type='hidden' name='courses'>"
+var add_section_template  = "<a class='add_section' id='' href='#'>Add Section</a>"
 
 $('a.add_course').click(function() {
     console.log("add course")
@@ -59,7 +58,11 @@ $('a.add_course').click(function() {
 
     //insert add section button
     $(add_section_template).insertAfter(new_course.children().last())
-
+    //console.log($(this).parents().find("div.course"))
+    if ($(this).parents().find("div.course").length == 0){
+        //console.log($(this).parents().find("form.form"))
+        $(this).parents().find("form.form").prepend(new_course)
+    }
     new_course.insertAfter($(this).parents().find("div.course").last())
 });
 
