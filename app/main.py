@@ -71,6 +71,13 @@ def upload_courses(username):
 
         #print(course_times)
         assigned_sections = solve_course(course_times)
+
+        #check if solve course success
+        for section in assigned_sections:
+            if section is None:
+                flash("Failed to solve course")
+                return redirect(url_for('dashboard', username=username))
+
         print(assigned_sections)
         print(courses)
 
@@ -109,7 +116,7 @@ def solve_course(course_times):
         course_times_mod[0][0] -= 1
         print("1 conflict")
         removing = 1
-        while None in assigned_sections and removing <= len(course_times):
+        while None in assigned_sections and removing < len(course_times):
 
 
             course_times_mod.pop(removing)

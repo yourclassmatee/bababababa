@@ -157,6 +157,12 @@ function check(id){
         //set course_id
         new_course.attr("id", id)
 
+        if ($("a.add_course").parents().find("div.course").length == 0){
+            //console.log($("a.add_course").parents().find("form.form"))
+            $("a.add_course").parents().find("form.form").prepend(new_course)
+        }
+        //new_course.insertAfter($(this).parents().find("div.course").last())
+
         new_course.insertAfter($("a.add_course").parents().find("div.course").last())
 
         
